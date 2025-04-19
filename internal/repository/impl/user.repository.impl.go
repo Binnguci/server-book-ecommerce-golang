@@ -19,7 +19,7 @@ func (uri *UserRepositoryImpl) GetUserByEmail(email string) bool {
 }
 
 func (uri *UserRepositoryImpl) Register(user *model.User) bool {
-	result := global.Mdb.Table(model.TableNameUser).Create(&user).RowsAffected
+	result := global.Mdb.Create(&user).RowsAffected
 	return result != 0
 }
 
@@ -27,12 +27,5 @@ func (uri *UserRepositoryImpl) Update(user *model.User) bool {
 	result := global.Mdb.Table(model.TableNameUser).
 		Where("id = ?", user.ID).
 		Updates(user).RowsAffected
-	return result != 0
-}
-
-func (uri *UserRepositoryImpl) ChangePassword(username string, password string) bool {
-	result := global.Mdb.Table(model.TableNameUser).
-		Where("username = ?", username).
-		Update("password", password).RowsAffected
 	return result != 0
 }

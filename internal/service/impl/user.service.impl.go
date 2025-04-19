@@ -1,7 +1,6 @@
 package impl
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
 	"go.uber.org/zap"
 	"server-furniture-ecommerce-gin/global"
@@ -60,33 +59,14 @@ func (usi *UserServiceImpl) Register(register request.RegisterRequest) int {
 	hashedPassword := crypto.GetHash(user.Password)
 	user.Password = hashedPassword
 
-	if !usi.userRepository.Register(user) {
-		return exception.CreateFailedCode
-	}
 	if err := usi.sendOTPEmail(register.Email, otp); err != nil {
 		return exception.ErrorSendEmail
 	}
 
+	if !usi.userRepository.Register(user) {
+		return exception.CreateFailedCode
+	}
 	return exception.CreateSuccessCode
-}
-
-func (usi *UserServiceImpl) ChangePassword(changePassData request.ChangePasswordRequest, c *gin.Context) int {
-	userAny, exists := c.Get("user")
-	if !exists {
-		global.Logger.Error(exception.GetMessage(exception.NotFoundCode))
-		return exception.NotFoundCode
-	}
-	user, _ := userAny.(string)
-	ok := usi.authRepository.GetUserByUsernameAndPassword(user, changePassData.OldPassword)
-	if !ok {
-		global.Logger.Error(exception.GetMessage(exception.NotFoundCode))
-		return exception.NotFoundCode
-	}
-	hashPassword := crypto.GetHash(changePassData.NewPassword)
-	if !usi.userRepository.ChangePassword(user, hashPassword) {
-		return exception.InternalServerErrorCode
-	}
-	return exception.SuccessCode
 }
 
 func (usi *UserServiceImpl) mapRequestToUser(register request.RegisterRequest) *model.User {
