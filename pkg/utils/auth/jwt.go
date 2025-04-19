@@ -1,32 +1,32 @@
 package auth
 
 import (
-	"fmt"
-	"github.com/golang-jwt/jwt/v4"
+	"github.com/golang-jwt/jwt/v5"
 	"server-furniture-ecommerce-gin/global"
 	"time"
 )
 
-type PayloadClaims struct {
+var jwtKey = []byte(global.Config.JWT.API_SECRET_KEY)
+
+type Claims struct {
 	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
 
 func GenerateToken(username string) (string, error) {
-	expirationTimeStr := fmt.Sprintf("%d", global.Config.JWT.JWTExpirationTime)
-	expirationTime, err := time.ParseDuration(expirationTimeStr + "s")
-	if err != nil {
-		expirationTime = time.Hour // Mặc định 1 giờ nếu lỗi
-	}
-
-	claims := PayloadClaims{
+	expirationTime := time.Now().Add(24 * time.Hour)
+	claims := &Claims{
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(expirationTime)),
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
-			Subject:   username,
 		},
 	}
+
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(global.Config.JWT.API_SECRET_KEY))
+	tokenString, err := token.SignedString(jwtKey)
+	if err != nil {
+		return "", err
+	}
+	return tokenString, nil
 }

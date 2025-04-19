@@ -20,8 +20,8 @@ type UserLog struct {
 	Message   string         `gorm:"column:message" json:"message"`
 	LogLevel  string         `gorm:"column:log_level" json:"log_level"`
 	IPAddress string         `gorm:"column:ip_address" json:"ip_address"`
-	CreatedAt time.Time      `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	CreatedAt time.Time      `gorm:"column:created_at;default:current_timestamp()" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"column:updated_at;default:current_timestamp()" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 

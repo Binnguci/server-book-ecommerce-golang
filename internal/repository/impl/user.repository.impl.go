@@ -19,7 +19,7 @@ func (uri *UserRepositoryImpl) GetUserByEmail(email string) bool {
 }
 
 func (uri *UserRepositoryImpl) Register(user *model.User) bool {
-	result := global.Mdb.Create(&user).RowsAffected
+	result := global.Mdb.Table(model.TableNameUser).Create(&user).RowsAffected
 	return result != 0
 }
 

@@ -26,6 +26,7 @@ const (
 	CreateFailedCode  = 1004
 	ErrorUpdateCode   = 3001
 	CannotCreateToken = 3002
+	TokenIsRequired   = 3003
 )
 
 var message = map[int]string{
@@ -54,6 +55,7 @@ var message = map[int]string{
 	CreateFailedCode:  "Error when creating resource",
 	ErrorUpdateCode:   "Error when updating database",
 	CannotCreateToken: "Can't create token when login",
+	TokenIsRequired:   "Token is required",
 }
 
 func GetMessage(code int) string {

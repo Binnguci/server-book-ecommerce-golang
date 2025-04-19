@@ -17,8 +17,8 @@ type Cart struct {
 	ID        []byte         `gorm:"column:id;primaryKey" json:"id"`
 	UserID    []byte         `gorm:"column:user_id;not null" json:"user_id"`
 	Quantity  int32          `gorm:"column:quantity" json:"quantity"`
-	CreatedAt time.Time      `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	CreatedAt time.Time      `gorm:"column:created_at;default:current_timestamp()" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"column:updated_at;default:current_timestamp()" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 

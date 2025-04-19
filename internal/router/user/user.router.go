@@ -23,8 +23,6 @@ func (ur *UserRouter) InitUserRouter(Router *gin.RouterGroup) {
 
 	//private router
 	userRouterPrivate := Router.Group("/auth")
-	//userRouterPrivate.Use(middleware.AuthenticationMiddleware())
-	userRouterPrivate.Use(middleware.PermissionMiddleware())
 	userRouterPrivate.Use(middleware.JWTAuthMiddleware())
 	{
 		userRouterPrivate.PUT("/change-password", userController.ChangePassword)

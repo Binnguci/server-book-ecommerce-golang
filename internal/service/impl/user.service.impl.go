@@ -60,13 +60,13 @@ func (usi *UserServiceImpl) Register(register request.RegisterRequest) int {
 	hashedPassword := crypto.GetHash(user.Password)
 	user.Password = hashedPassword
 
+	if !usi.userRepository.Register(user) {
+		return exception.CreateFailedCode
+	}
 	if err := usi.sendOTPEmail(register.Email, otp); err != nil {
 		return exception.ErrorSendEmail
 	}
 
-	if !usi.userRepository.Register(user) {
-		return exception.CreateFailedCode
-	}
 	return exception.CreateSuccessCode
 }
 
@@ -77,8 +77,8 @@ func (usi *UserServiceImpl) ChangePassword(changePassData request.ChangePassword
 		return exception.NotFoundCode
 	}
 	user, _ := userAny.(string)
-	_, err := usi.authRepository.GetUserByUsernameAndPassword(user, changePassData.OldPassword)
-	if err != nil {
+	ok := usi.authRepository.GetUserByUsernameAndPassword(user, changePassData.OldPassword)
+	if !ok {
 		global.Logger.Error(exception.GetMessage(exception.NotFoundCode))
 		return exception.NotFoundCode
 	}

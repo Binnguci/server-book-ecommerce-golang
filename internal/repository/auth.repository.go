@@ -6,7 +6,9 @@ import (
 
 type IAuthRepository interface {
 	AddOTP(email string, otp int, expirationTime int64) error
-	GetUserByOTP(otp string) (*model.User, error)
-	GetUserByUsernameAndPassword(username string, password string) (bool, error)
-	SaveTokenInvalid(tokenInvalid *string) (bool, error)
+	GetUserByOTP(otp string) *model.User
+	GetUserByUsernameAndPassword(username string, password string) bool
+	GetUserByUsername(username string) (*model.User, error)
+	CheckPassword(password string) bool
+	SaveTokenInvalid(tokenInvalid *string) bool
 }

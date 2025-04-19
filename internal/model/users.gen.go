@@ -5,6 +5,7 @@
 package model
 
 import (
+	"github.com/google/uuid"
 	"time"
 
 	"gorm.io/gorm"
@@ -14,7 +15,7 @@ const TableNameUser = "users"
 
 // User mapped from table <users>
 type User struct {
-	ID             []byte         `gorm:"column:id;primaryKey;default:uuid_to_bin(uuid(),1)" json:"id"`
+	ID             []byte         `gorm:"column:id;primaryKey" json:"id"`
 	Username       string         `gorm:"column:username;not null" json:"username"`
 	Email          string         `gorm:"column:email;not null" json:"email"`
 	Password       string         `gorm:"column:password" json:"password"`
@@ -27,12 +28,18 @@ type User struct {
 	RoleID         int32          `gorm:"column:role_id;not null" json:"role_id"`
 	IsActive       bool           `gorm:"column:is_active" json:"is_active"`
 	IsLocked       bool           `gorm:"column:is_locked" json:"is_locked"`
-	CreatedAt      time.Time      `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt      time.Time      `gorm:"column:updated_at;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	CreatedAt      time.Time      `gorm:"column:created_at;default:current_timestamp()" json:"created_at"`
+	UpdatedAt      time.Time      `gorm:"column:updated_at;default:current_timestamp()" json:"updated_at"`
 	DeletedAt      gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 
 // TableName User's table name
 func (*User) TableName() string {
 	return TableNameUser
+}
+
+func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+	newUUID := uuid.New()
+	u.ID, err = newUUID.MarshalBinary() // Chuyển UUID thành dạng nhị phân
+	return err
 }

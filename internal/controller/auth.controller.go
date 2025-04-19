@@ -37,12 +37,10 @@ func (ac *AuthController) Login(c *gin.Context) {
 		response.ErrorResponse(c, exception.BadRequestCode, constant.DATA_INVALIDATED)
 		return
 	}
-	_, err := ac.authService.Login(&loginData)
-	if err != nil {
-		response.ErrorResponse(c, exception.UnauthorizedCode, err.Error())
-		return
+	ok := ac.authService.Login(&loginData)
+	if !ok {
+		response.ErrorResponse(c, exception.NotFoundCode, "")
 	}
-
 	token, err := auth.GenerateToken(loginData.Username)
 	if err != nil {
 		response.ErrorResponse(c, exception.InternalServerErrorCode, "")

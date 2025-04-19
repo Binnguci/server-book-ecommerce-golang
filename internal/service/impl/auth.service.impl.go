@@ -2,13 +2,13 @@ package impl
 
 import (
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 	"server-furniture-ecommerce-gin/global"
 	"server-furniture-ecommerce-gin/internal/domain/request"
 	"server-furniture-ecommerce-gin/internal/repository"
 	"server-furniture-ecommerce-gin/internal/service"
 	"server-furniture-ecommerce-gin/pkg/exception"
 	"server-furniture-ecommerce-gin/pkg/helper"
+	"server-furniture-ecommerce-gin/pkg/utils/crypto"
 )
 
 type AuthServiceImpl struct {
@@ -24,9 +24,9 @@ func NewAuthService(authRepository repository.IAuthRepository, userRepository re
 }
 
 func (asi *AuthServiceImpl) VerifyAccount(otp string) int {
-	user, err := asi.authRepository.GetUserByOTP(otp)
-	if err != nil {
-		global.Logger.Error("Failed when search user by otp", zap.Error(err))
+	user := asi.authRepository.GetUserByOTP(otp)
+	if user == nil {
+		global.Logger.Error("Failed when search user by otp")
 		return exception.NotFoundCode
 	}
 	user.IsActive = true
@@ -38,12 +38,16 @@ func (asi *AuthServiceImpl) VerifyAccount(otp string) int {
 	return exception.SuccessCode
 }
 
-func (asi *AuthServiceImpl) Login(loginData *request.LoginInput) int {
-	_, err := asi.authRepository.GetUserByUsernameAndPassword(loginData.Username, loginData.Password)
-	if err != nil {
-		return exception.BadRequestCode
+func (asi *AuthServiceImpl) Login(loginData *request.LoginInput) bool {
+	user, _ := asi.authRepository.GetUserByUsername(loginData.Username)
+	if user == nil {
+		return false
 	}
-	return exception.SuccessCode
+	hashPass := crypto.GetHash(loginData.Password)
+	if hashPass == user.Password {
+		return true
+	}
+	return false
 }
 
 func (asi *AuthServiceImpl) Logout(logoutData *request.LogoutData, ctx *gin.Context) int {

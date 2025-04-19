@@ -7,6 +7,6 @@ import (
 
 type IAuthService interface {
 	VerifyAccount(otp string) int
-	Login(loginData *request.LoginInput) int
+	Login(loginData *request.LoginInput) bool
 	Logout(logoutData *request.LogoutData, c *gin.Context) int
 }
