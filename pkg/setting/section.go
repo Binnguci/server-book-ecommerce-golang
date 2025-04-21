@@ -51,6 +51,6 @@ type MailSetting struct {
 
 type JWTSetting struct {
 	API_SECRET_KEY           string `mapstructure:"api-key"`
-	JWTExpirationTime        string `mapstructure:"jwt-expiration-time"`
-	JWTRefreshExpirationTime string `mapstructure:"jwt-refresh-expiration-time"`
+	JWTExpirationTime        int    `mapstructure:"jwt-expiration-time"`
+	JWTRefreshExpirationTime int    `mapstructure:"jwt-refresh-expiration-time"`
 }

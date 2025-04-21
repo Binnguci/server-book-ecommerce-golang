@@ -23,8 +23,8 @@ type Promotion struct {
 	EndDate           time.Time      `gorm:"column:end_date;not null" json:"end_date"`
 	UsageLimit        int32          `gorm:"column:usage_limit" json:"usage_limit"`
 	IsActive          bool           `gorm:"column:is_active;default:1" json:"is_active"`
-	CreatedAt         time.Time      `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt         time.Time      `gorm:"column:updated_at;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	CreatedAt         time.Time      `gorm:"column:created_at;default:current_timestamp()" json:"created_at"`
+	UpdatedAt         time.Time      `gorm:"column:updated_at;default:current_timestamp()" json:"updated_at"`
 	DeletedAt         gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 

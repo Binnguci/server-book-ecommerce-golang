@@ -22,8 +22,8 @@ type Product struct {
 	CategoryID  int32          `gorm:"column:category_id;not null" json:"category_id"`
 	SupplierID  int32          `gorm:"column:supplier_id;not null" json:"supplier_id"`
 	IsActive    bool           `gorm:"column:is_active;default:1" json:"is_active"`
-	CreatedAt   time.Time      `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt   time.Time      `gorm:"column:updated_at;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	CreatedAt   time.Time      `gorm:"column:created_at;default:current_timestamp()" json:"created_at"`
+	UpdatedAt   time.Time      `gorm:"column:updated_at;default:current_timestamp()" json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 

@@ -8,16 +8,16 @@ package injector
 
 import (
 	"server-furniture-ecommerce-gin/internal/controller"
-	"server-furniture-ecommerce-gin/internal/repository"
-	"server-furniture-ecommerce-gin/internal/service"
+	"server-furniture-ecommerce-gin/internal/repository/impl"
+	impl2 "server-furniture-ecommerce-gin/internal/service/impl"
 )
 
 // Injectors from auth.wire.go:
 
 func InitAuthControllerHandler() (*controller.AuthController, error) {
-	iAuthRepository := repository.NewAuthRepository()
-	iUserRepository := repository.NewUserRepository()
-	iAuthService := service.NewAuthService(iAuthRepository, iUserRepository)
+	iAuthRepository := impl.NewAuthRepository()
+	iUserRepository := impl.NewUserRepository()
+	iAuthService := impl2.NewAuthService(iAuthRepository, iUserRepository)
 	authController := controller.NewAuthController(iAuthService)
 	return authController, nil
 }
@@ -25,10 +25,10 @@ func InitAuthControllerHandler() (*controller.AuthController, error) {
 // Injectors from user.wire.go:
 
 func InitUserControllerHandler() (*controller.UserController, error) {
-	iUserRepository := repository.NewUserRepository()
-	iRoleRepository := repository.NewRoleReppository()
-	iAuthRepository := repository.NewAuthRepository()
-	iUserService := service.NewUserService(iUserRepository, iRoleRepository, iAuthRepository)
+	iUserRepository := impl.NewUserRepository()
+	iRoleRepository := impl.NewRoleRepository()
+	iAuthRepository := impl.NewAuthRepository()
+	iUserService := impl2.NewUserService(iUserRepository, iRoleRepository, iAuthRepository)
 	userController := controller.NewUserController(iUserService)
 	return userController, nil
 }

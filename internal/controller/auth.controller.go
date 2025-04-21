@@ -2,6 +2,7 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
+	"server-furniture-ecommerce-gin/internal/constant"
 	"server-furniture-ecommerce-gin/internal/domain/request"
 	"server-furniture-ecommerce-gin/internal/domain/response"
 	"server-furniture-ecommerce-gin/internal/service"
@@ -33,20 +34,18 @@ func (ac *AuthController) Login(c *gin.Context) {
 	var loginData request.LoginInput
 
 	if err := c.ShouldBindJSON(&loginData); err != nil {
-		response.ErrorResponse(c, exception.BadRequestCode, "Dữ liệu không hợp lệ")
+		response.ErrorResponse(c, exception.BadRequestCode, constant.DATA_INVALIDATED)
 		return
 	}
-	_, err := ac.authService.Login(&loginData)
-	if err != nil {
-		response.ErrorResponse(c, exception.UnauthorizedCode, err.Error())
-		return
+	ok := ac.authService.Login(&loginData)
+	if !ok {
+		response.ErrorResponse(c, exception.NotFoundCode, "")
 	}
-
 	token, err := auth.GenerateToken(loginData.Username)
 	if err != nil {
-		response.ErrorResponse(c, exception.InternalServerErrorCode, "Không thể tạo token")
+		response.ErrorResponse(c, exception.InternalServerErrorCode, "")
 		return
 	}
 
-	response.SuccessResponse(c, exception.SuccessCode, gin.H{"token": token})
+	response.SuccessResponse(c, exception.SuccessCode, response.LoginResponse{token, constant.LOGIN_SUCCESSFUL})
 }

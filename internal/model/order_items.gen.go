@@ -19,8 +19,8 @@ type OrderItem struct {
 	ProductID int32          `gorm:"column:product_id;not null" json:"product_id"`
 	Quantity  int32          `gorm:"column:quantity;not null" json:"quantity"`
 	Price     float64        `gorm:"column:price;not null" json:"price"`
-	CreatedAt time.Time      `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	CreatedAt time.Time      `gorm:"column:created_at;default:current_timestamp()" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"column:updated_at;default:current_timestamp()" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 

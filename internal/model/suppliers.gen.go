@@ -22,8 +22,8 @@ type Supplier struct {
 	Country      string         `gorm:"column:country" json:"country"`
 	Website      string         `gorm:"column:website" json:"website"`
 	IsActive     int32          `gorm:"column:is_active;default:1" json:"is_active"`
-	CreatedAt    time.Time      `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt    time.Time      `gorm:"column:updated_at;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	CreatedAt    time.Time      `gorm:"column:created_at;default:current_timestamp()" json:"created_at"`
+	UpdatedAt    time.Time      `gorm:"column:updated_at;default:current_timestamp()" json:"updated_at"`
 	DeletedAt    gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 

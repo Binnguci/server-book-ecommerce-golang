@@ -20,8 +20,8 @@ type SupportCustomer struct {
 	Message   string         `gorm:"column:message" json:"message"`
 	Feedback  string         `gorm:"column:feedback" json:"feedback"`
 	IsSolve   bool           `gorm:"column:is_solve" json:"is_solve"`
-	CreatedAt time.Time      `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt time.Time      `gorm:"column:updated_at;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	CreatedAt time.Time      `gorm:"column:created_at;default:current_timestamp()" json:"created_at"`
+	UpdatedAt time.Time      `gorm:"column:updated_at;default:current_timestamp()" json:"updated_at"`
 	DeletedAt gorm.DeletedAt `gorm:"column:deleted_at" json:"deleted_at"`
 }
 

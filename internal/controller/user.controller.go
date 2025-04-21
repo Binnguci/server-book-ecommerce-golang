@@ -28,3 +28,13 @@ func (uc *UserController) Register(c *gin.Context) {
 	result := uc.userService.Register(registerReq)
 	response.SuccessResponse(c, result, nil)
 }
+
+func (uc *UserController) ChangePassword(c *gin.Context) {
+	var changePasswordData request.ChangePasswordRequest
+	if err := c.ShouldBind(&changePasswordData); err != nil {
+		response.ErrorResponse(c, exception.BadRequestCode, err.Error())
+		return
+	}
+	result := uc.userService.ChangePassword(changePasswordData, c)
+	response.SuccessResponse(c, exception.SuccessCode, result)
+}

@@ -24,7 +24,6 @@ func InitMySQL() {
 	db, err := gorm.Open(mysql.Open(s), &gorm.Config{})
 
 	checkErrorPanic(err, "gorm.Open failed")
-	global.Logger.Info("MySQL connect success")
 	global.Mdb = db
 	//genEntity()
 	SetPool()

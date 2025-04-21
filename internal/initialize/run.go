@@ -11,6 +11,7 @@ func Run() {
 	InitMySQL()
 	InitRedis()
 	InitRouter()
+	//InitElasticsearch()
 
 	r := InitRouter()
 	port := global.Config.Server.Port
